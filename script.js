@@ -3,13 +3,14 @@ var generateBtn = document.querySelector("#generate");
 
 // Write password to the #password input
 
+// Create string variables for each of the character types.
 var lowerLetters = "abcdefghijklmnopqrstuvwxyz";
 var upperLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 var numbers = "1234567890";
 var specialChars = "!@#$%^&*()";
-var charSet = [];
+var charSet = "";
 
-
+// Get input from the user and validate that they have entered it correctly. Then return that input as an object.
 var getInput = function () {
   var length = prompt("Please choose a length for your password between 8 and 128 characters.");
   while (length < 8 || length > 128) {
@@ -43,7 +44,8 @@ var getInput = function () {
   };
 }
 
-var getCharSet = function () {
+// Create a character set based on the user's choices of character types to include.
+var getCharSet = function (userInput) {
   var totalCharSet = charSet;
   if (userInput.lower === "Y") {
     totalCharSet = charSet.concat(lowerLetters);
@@ -60,9 +62,17 @@ var getCharSet = function () {
   return totalCharSet;
 }
 
+// Generate password: get user input, use that input to create a character set, 
+// then choose random characters from that character set until the desired length is reached.
 function generatePassword() {
   var userInput = getInput();
-  var totalCharSet = getCharSet();
+  var totalCharSet = getCharSet(userInput);
+  var generatedPass = "";
+  for (let i = 0; i < userInput.length; i++) {
+    var nextChar = totalCharSet.charAt(Math.floor(Math.random() * totalCharSet.length));
+    generatedPass = generatedPass.concat(nextChar);
+  }
+  return generatedPass;
 }
 
 function writePassword() {
