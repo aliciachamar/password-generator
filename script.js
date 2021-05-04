@@ -3,7 +3,14 @@ var generateBtn = document.querySelector("#generate");
 
 // Write password to the #password input
 
-function getInput() {
+var lowerLetters = "abcdefghijklmnopqrstuvwxyz";
+var upperLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+var numbers = "1234567890";
+var specialChars = "!@#$%^&*()";
+var charSet = [];
+
+
+var getInput = function () {
   var length = prompt("Please choose a length for your password between 8 and 128 characters.");
   while (length < 8 || length > 128) {
     var length = prompt("That is not a valid entry. Please choose a length for your password between 8 and 128 characters.");
@@ -24,7 +31,7 @@ function getInput() {
   while (special !== 'Y' && special !== "N") {
     var special = prompt("That is not a valid entry. Use special characters? Enter 'Y' for yes and 'N' for no.");
   } if (lower === "N" && upper === "N" && number === "N" && special === "N") {
-    confirm("Please choose at least one character type to use.");
+    alert("Please choose at least one character type to use.");
     getInput();
   }
   return {
@@ -33,11 +40,29 @@ function getInput() {
     upper: upper,
     number: number,
     special: special
+  };
+}
+
+var getCharSet = function () {
+  var totalCharSet = charSet;
+  if (userInput.lower === "Y") {
+    totalCharSet = charSet.concat(lowerLetters);
+  } 
+  if (userInput.upper === "Y") {
+    totalCharSet = totalCharSet.concat(upperLetters);
   }
+  if (userInput.number === "Y") {
+    totalCharSet = totalCharSet.concat(numbers);
+  }
+  if (userInput.special === "Y") {
+    totalCharSet = totalCharSet.concat(specialChars);
+  }
+  return totalCharSet;
 }
 
 function generatePassword() {
-  const userInput = getInput();
+  var userInput = getInput();
+  var totalCharSet = getCharSet();
 }
 
 function writePassword() {
@@ -45,10 +70,7 @@ function writePassword() {
   var passwordText = document.querySelector("#password");
 
   passwordText.value = password;
-
 }
-
-
 
 // Add event listener to generate button
 generateBtn.addEventListener("click", writePassword);
